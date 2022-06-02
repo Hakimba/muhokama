@@ -55,6 +55,13 @@ val create : User_model.t -> creation_form -> Lib_db.t -> string Try.t Lwt.t
 (** Retreive a topic by ID. *)
 val get_by_id : string -> Lib_db.t -> Showable.t Try.t Lwt.t
 
+(** List all topics from an author by his ID **)
+val list_by_author
+  :  string
+  -> (Listable.t -> 'a)
+  -> Lib_db.t
+  -> 'a list Try.t Lwt.t
+
 (** List all topics. *)
 val list_all : (Listable.t -> 'a) -> Lib_db.t -> 'a list Try.t Lwt.t
 

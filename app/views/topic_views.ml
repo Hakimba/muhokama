@@ -314,3 +314,42 @@ let show ?flash_info ~csrf_token ~user topic messages =
     ~user
     (Show.thread csrf_token user topic messages)
 ;;
+
+let profile ?flash_info ~user topics =
+  Templates.Layout.default
+    ~lang:"fr"
+    ~page_title:"Page de profil"
+    ?flash_info
+    ~user
+    Tyxml.Html.
+    [
+      nav ~a:[ a_class [ "breadcrumb"; "is-centered" ]]
+        [
+          ul 
+            [
+              li [a ~a:[a_href "#"] [txt "Mes préférences"]];
+              li [a ~a:[a_href "#"] [txt "Another button"]];
+              li [a ~a:[a_href "#"] [txt "Yet another button"]]
+            ]
+        ]
+      ;
+      div ~a:[ a_class ["columns"]]
+        [
+          div ~a:[ a_class ["column";"is-narrow";"is-3"]]
+            [
+              p ~a:[a_class ["title";"is-5"]] [txt user.name];
+              figure ~a:[ a_class ["image";"is-128x128"]]
+                [
+                  Templates.Component.avatar
+                    ~email:user.Models.User.email
+                    ~username:user.name
+                    ()
+                ]
+            ];
+          div ~a:[ a_class ["column";"is-narrow"]]
+            [
+              p ~a:[a_class ["title"]] [txt "Mes topics"];
+              List.all topics
+            ]
+        ]
+    ]

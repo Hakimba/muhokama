@@ -23,3 +23,9 @@ val show
   -> Models.Topic.Showable.t
   -> Models.Message.t list
   -> Tyxml.Html.doc
+
+(** A view for the profile page **)
+val profile :
+  ?flash_info:Models.Flash_info.t ->
+  user:Models.User.t ->
+  Models.Topic.Listable.t list -> [> Html_types.html ] Tyxml_html.elt

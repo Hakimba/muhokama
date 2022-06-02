@@ -19,3 +19,6 @@ val leave : (Dream.request, Dream.response) Service.t
 
 (** Generate the page of all active users. *)
 val list_active : (Dream.request, Dream.response) Service.t
+
+(** Generate the profile page **)
+val profile : (Dream.request, Dream.response) Service.t

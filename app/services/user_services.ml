@@ -89,3 +89,23 @@ let list_active =
       Flash_info.error_tree request err;
       redirect_to ~:Endpoints.Global.root request)
 ;;
+
+let profile =
+  Service.failable_with
+  ~:Endpoints.User.profile
+  ~attached:user_required
+  [ user_authenticated ]
+  (fun user request ->
+    let open Lwt_util in
+    let open Models.User in
+    let+? topics_by_current_user = 
+      Dream.sql request @@ Models.Topic.list_by_author user.id Fun.id in
+    user, topics_by_current_user)
+  ~succeed:(fun (user, topics) request ->
+    let flash_info = Flash_info.fetch request in
+    let view = Views.Topic.profile ?flash_info ~user topics in
+    Dream.html @@ from_tyxml view)
+  ~failure:(fun err request ->
+    Flash_info.error_tree request err;
+    redirect_to ~:Endpoints.Global.error request)
+;;
